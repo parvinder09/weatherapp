@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<title>weather app</title>
+	<head>
+				<meta charset="utf-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1">
+				<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+				<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+				
+	<style>
+		body{
+		background-color:black;
+		}
+		.text{
+			text-align:center;
+			color:white;
+			margin-top:10%;
+			font-family:cursive;
+		}
+		.temperature{
+		color:white;
+		text-align:center;
+		}
+		#id{
+		color:white;
+		font-size:40px;
+		}
+		#city,#format,#temp{
+		font-size:20px;
+		font-family:cursive;
+		font-weight:4px;
+		}
+		#footer{
+		text-align:center;
+		margin-top:40px;
+		color:white;
+		}
+	</style>
+	<script>
+		$(document).ready(function(){
+			var appid='&appid=44db6a862fba0b067b1930da0d769e98';
+					var show=function(data){
+						var icon='http://openweathermap.org/img/w/'+data.weather[0].icon+'.png';
+						$("#icon").attr("src",'icon');
+						var temp=data.main.temp;
+						var city=data.name;
+						temp=Math.round(temp-273.15,2);
+						$("#temp").text(temp);
+						$("#city").text(city);
+					}
+					
+					 var load = navigator.geolocation.getCurrentPosition(function(position) {
+						var url='http://api.openweathermap.org/data/2.5/weather?lat=';
+						var latitude=position.coords.latitude;
+						var longitude=position.coords.longitude;
+						 $.getJSON(url+latitude+"&lon="+longitude+appid,show);
+					  });
+					  
+			$("#format").click(function(){
+					var format=$("#format").text();
+					var ans=$("#temp").text();
+					if(format == "celsius"){
+					var nans=Math.round((ans*1.8)+32);
+					$("#temp").text(nans);
+					$("#format").text("fahrenheit")
+					
+					}
+					else if(format == "fahrenheit"){
+					var nans=Math.round((ans-32)*(0.55555));
+					$("#temp").text(nans);
+					$("#format").text("celsius")
+					
+					}
+			});		
+		});
+	</script>
+	</head>
+<body>
+	<div class="container block">
+		<div class="text">
+			<h1>Weather App</h1>
+		</div>
+		<div class="temperature">
+				
+				<div id="city">your city</div>
+				<img id="icon" src="">
+				<div id="temp">current temperature</div>
+				<div id="format">celsius</div>
+		</div>
+	</div>
+	<div id="footer">
+	by <a href="http://www.freecodecamp.com/parvinder09" target="_blank">Parvinder Kumar</a>
+	</div>
+</body>
+</html>
